@@ -44,6 +44,9 @@ const postOffice_1 = __importDefault(require("./Offices/postOffice"));
 const getOffices_1 = __importDefault(require("./Offices/getOffices"));
 /* ============PAYMENTS============*/
 const Paypal_1 = __importDefault(require("./Payments/Paypal"));
+/*=============ORDERS=============*/
+const getPurchaseOrders_1 = __importDefault(require("./Orders/getPurchaseOrders"));
+const getOrder_1 = __importDefault(require("./Orders/getOrder"));
 const router = (0, express_1.Router)();
 /* ============PRODUCTS============ */
 router.use("/products", postProducts_1.default);
@@ -85,4 +88,7 @@ router.use("/barber/", postbarber_1.default);
 router.use("/barber/", getbarbers_1.default);
 /* ============PAYMENTS============*/
 router.use("/payments", Paypal_1.default);
+/* ===========ORDERSS==============*/
+router.use("/orders", getPurchaseOrders_1.default);
+router.use("/orders", getOrder_1.default);
 exports.default = router;
