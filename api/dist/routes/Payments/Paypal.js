@@ -53,7 +53,7 @@ router.get("/capture-order", (req, res) => __awaiter(void 0, void 0, void 0, fun
             password: "EG_ZGG1BcPvJhGKbU0HafZRgg1mFMRGk0kZVULdRAL-ECDr5IYVzvA1aWNPXiWQHcSRHqxooNZnyoy6Z",
         },
     });
-    console.log(response.data);
+    console.log(response.data.purchase_units.shipping);
     res.status(200).send("capture");
 }));
 router.get("/cancel-order", (req, res) => {

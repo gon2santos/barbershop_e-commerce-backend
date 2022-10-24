@@ -57,7 +57,7 @@ router.get("/capture-order", async (req, res) => {
     }
   );
 
-  console.log(response.data);
+  console.log(response.data.purchase_units.shipping);
   res.status(200).send("capture");
 });
 
