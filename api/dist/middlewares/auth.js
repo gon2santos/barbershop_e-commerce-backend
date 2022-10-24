@@ -22,10 +22,8 @@ const verifyToken = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
         if (!token)
             return res.status(403).json({ message: "No hay token" });
         const decoded = jsonwebtoken_1.default.verify(token, "token");
-        console.log(decoded);
         req.userId = decoded["_id"];
         const user = yield user_1.default.findById(req.userId, { password: 0 });
-        console.log(user);
         if (!user)
             return res.status(404).json({ message: "No se encontro ningun usuario" });
         next();
@@ -40,7 +38,6 @@ const isCommon = (req, res, next) => __awaiter(void 0, void 0, void 0, function*
     if (!token)
         return res.status(403).json({ message: "No hay token" });
     const decoded = jsonwebtoken_1.default.verify(token, "token");
-    console.log(decoded);
     req.userId = decoded["_id"];
     const user = yield user_1.default.findById(req.userId);
     const roles = yield role_1.default.find({ _id: { $in: user.role } });
@@ -60,11 +57,9 @@ const isAdmin = (req, res, next) => __awaiter(void 0, void 0, void 0, function* 
     req.userId = decoded["_id"];
     const user = yield user_1.default.findById(req.userId);
     const roles = yield role_1.default.find({ _id: { $in: user === null || user === void 0 ? void 0 : user.role } });
-
     if (roles[0].name === "admin") {
         next();
         return;
-
     }
     return res.status(403).json({ isAdmin: false });
 });
