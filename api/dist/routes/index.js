@@ -30,8 +30,8 @@ const resetPwd_1 = __importDefault(require("./User/resetPwd"));
 const patchPwd_1 = __importDefault(require("./User/patchPwd"));
 const editUser_1 = __importDefault(require("./User/editUser"));
 /* ============CATEGORIES============ */
-const postCategories_1 = __importDefault(require("./Categories/postCategories"));
-const deleteCategory_1 = __importDefault(require("./Categories/deleteCategory"));
+const postCategories_1 = __importDefault(require("./Admin/postCategories"));
+const deleteCategory_1 = __importDefault(require("./Admin/deleteCategory"));
 const getAllCategories_1 = __importDefault(require("./Categories/getAllCategories"));
 /* ============REVIEWS============ */
 const postReview_1 = __importDefault(require("./Reviews/postReview"));
@@ -42,12 +42,14 @@ const postAppointment_1 = __importDefault(require("./Appointments/postAppointmen
 const getAppontments_1 = __importDefault(require("./Appointments/getAppontments"));
 const deleteAppointment_1 = __importDefault(require("./Appointments/deleteAppointment"));
 const getAllAppointments_1 = __importDefault(require("./Appointments/getAllAppointments"));
-/* ============OFFICES============ */
-const postbarber_1 = __importDefault(require("./Barbers/postbarber"));
-const getbarbers_1 = __importDefault(require("./Barbers/getbarbers"));
 /* ============BARBERS============ */
-const postOffice_1 = __importDefault(require("./Offices/postOffice"));
+const postbarber_1 = __importDefault(require("./Admin/postbarber"));
+const getbarbers_1 = __importDefault(require("./Barbers/getbarbers"));
+/* ============OFFICES============ */
+const postOffice_1 = __importDefault(require("./Admin/postOffice"));
 const getOffices_1 = __importDefault(require("./Offices/getOffices"));
+const patchOffice_1 = __importDefault(require("./Admin/patchOffice"));
+const deleteOffice_1 = __importDefault(require("./Admin/deleteOffice"));
 /* ============PAYMENTS============*/
 const captureOrder_1 = __importDefault(require("./Payments/captureOrder"));
 const cancelOrder_1 = __importDefault(require("./Payments/cancelOrder"));
@@ -62,6 +64,8 @@ const getPurchaseOrders_1 = __importDefault(require("./Orders/getPurchaseOrders"
 const searchOrder_1 = __importDefault(require("./Orders/searchOrder"));
 const changeStateOrder_1 = __importDefault(require("./Orders/changeStateOrder"));
 const filterOrders_1 = __importDefault(require("./Orders/filterOrders"));
+const deliverOrder_1 = __importDefault(require("./Orders/deliverOrder"));
+const getProductOrders_1 = __importDefault(require("./Orders/getProductOrders"));
 const router = (0, express_1.Router)();
 /* ============PRODUCTS============ */
 router.use("/products", postProducts_1.default);
@@ -107,6 +111,8 @@ router.use("/agenda/", getAllAppointments_1.default);
 /* ============OFFICES============ */
 router.use("/office/", postOffice_1.default);
 router.use("/office/", getOffices_1.default);
+router.use("/office/", patchOffice_1.default);
+router.use("/office/", deleteOffice_1.default);
 /* ============BARBERS============ */
 router.use("/barber/", postbarber_1.default);
 router.use("/barber/", getbarbers_1.default);
@@ -124,4 +130,6 @@ router.use("/orders", completeOrder_1.default);
 router.use("/orders", cancelOrders_1.default);
 router.use("/orders", deleteAllOrders_1.default);
 router.use("/orders", getUserOrders_1.default);
+router.use("/orders", deliverOrder_1.default);
+router.use("/orders", getProductOrders_1.default);
 exports.default = router;
