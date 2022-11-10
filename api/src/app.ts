@@ -33,7 +33,7 @@ app.use((_req, res, next) => {
     "*"
     //"GET, POST, OPTIONS, PUT, DELETE,PATCH"
   );
-  res.header("Access-Control-Allow-Information", "*");
+
   next();
 });
 
