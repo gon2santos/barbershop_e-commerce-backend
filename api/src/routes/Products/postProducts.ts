@@ -7,21 +7,26 @@ import Product from "../../models/products";
 const router = Router();
 
 router.post("/create", verifyToken, isAdmin, async (req: any, res: any) => {
-  let { name, description, price, stock, available, favorite, categories } =
-    req.body;
-
-  let image: Object;
-
+  let {
+    name,
+    description,
+    price,
+    stock,
+    available,
+    favorite,
+    categories,
+    image,
+  } = req.body;
+  console.log(req.body);
   try {
     if (typeof name === "string") name = name.toLocaleLowerCase();
-    image = await uploadImage(req.files.image.tempFilePath);
-    console.log(image);
+
     const product = new Product({
       name: name,
       description: description,
       price: price,
       stock: stock,
-      image: image["secure_url"],
+      image: image,
       available: available,
       favorite: favorite,
       categories: categories,

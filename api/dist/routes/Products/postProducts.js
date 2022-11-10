@@ -13,25 +13,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const cloudinary_1 = require("../../libs/cloudinary");
 const auth_1 = require("../../middlewares/auth");
 const categories_1 = __importDefault(require("../../models/categories"));
 const products_1 = __importDefault(require("../../models/products"));
 const router = (0, express_1.Router)();
 router.post("/create", auth_1.verifyToken, auth_1.isAdmin, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    let { name, description, price, stock, available, favorite, categories } = req.body;
-    let image;
+    let { name, description, price, stock, available, favorite, categories, image, } = req.body;
+    console.log(req.body);
     try {
         if (typeof name === "string")
             name = name.toLocaleLowerCase();
-        image = yield (0, cloudinary_1.uploadImage)(req.files.image.tempFilePath);
-        console.log(image);
         const product = new products_1.default({
             name: name,
             description: description,
             price: price,
             stock: stock,
-            image: image["secure_url"],
+            image: image,
             available: available,
             favorite: favorite,
             categories: categories,
