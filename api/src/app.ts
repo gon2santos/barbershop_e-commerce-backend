@@ -6,6 +6,7 @@ import fileUpload from "express-fileupload";
 import morgan from "morgan";
 import { createRoles } from "./libs/initialSetup";
 import routes from "./routes/index";
+import multer from "multer";
 const app = express();
 createRoles();
 app.use(cookieParser());
@@ -20,6 +21,7 @@ app.use(
     tempFileDir: "./uploads",
   })
 );
+
 app.use(morgan("dev"));
 app.use((_req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
@@ -29,12 +31,13 @@ app.use((_req, res, next) => {
     "Access-Control-Allow-Methods",
     "GET, POST, OPTIONS, PUT, DELETE,PATCH"
   );
+  res.header("Access-Control-Allow-Information", "*");
   next();
 });
 
+app.use(cors());
 //CONFIGURACION DE RUTAS
 app.use("/", routes);
-app.use(cors());
 
 app.use((err: any, _req: any, res: any, _next: any) => {
   const status = err.status || 500;

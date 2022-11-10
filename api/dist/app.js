@@ -28,11 +28,12 @@ app.use((_req, res, next) => {
     res.header("Access-Control-Allow-Credentials", "true");
     res.header("Access-Control-Allow-Headers", "*");
     res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE,PATCH");
+    res.header("Access-Control-Allow-Information", "*");
     next();
 });
+app.use((0, cors_1.default)());
 //CONFIGURACION DE RUTAS
 app.use("/", index_1.default);
-app.use((0, cors_1.default)());
 app.use((err, _req, res, _next) => {
     const status = err.status || 500;
     const message = err.message || err;
