@@ -7,7 +7,6 @@ import Product from "../../models/products";
 const router = Router();
 
 router.post("/create", verifyToken, isAdmin, async (req: any, res: any) => {
-
   let {
     name,
     description,
@@ -18,7 +17,6 @@ router.post("/create", verifyToken, isAdmin, async (req: any, res: any) => {
     categories,
     image,
   } = req.body;
-  console.log(req.body);
   try {
     if (typeof name === "string") name = name.toLocaleLowerCase();
 
@@ -38,9 +36,7 @@ router.post("/create", verifyToken, isAdmin, async (req: any, res: any) => {
         name: { $in: categories },
       });
       product.categories = foundCategory.map((el) => el._id);
-
-    }
-    else {
+    } else {
       image = await uploadImage(req.files.image.tempFilePath);
       console.log(image);
       const product = new Product({
