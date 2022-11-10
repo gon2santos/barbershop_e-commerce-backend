@@ -31,7 +31,6 @@ app.use((_req, res, next) => {
     res.header("Access-Control-Allow-Methods", "*"
     //"GET, POST, OPTIONS, PUT, DELETE,PATCH"
     );
-    res.header("Access-Control-Allow-Information", "*");
     next();
 });
 app.use((0, cors_1.default)());

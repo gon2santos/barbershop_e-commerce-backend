@@ -7,17 +7,38 @@ import Product from "../../models/products";
 const router = Router();
 
 router.post("/create", verifyToken, isAdmin, async (req: any, res: any) => {
-  let { name, description, price, stock, available, favorite, categories } =
-    req.body;
 
-  let image: Object;
-  console.log("Image: ");
-  console.log(JSON.stringify(image));
-
+  let {
+    name,
+    description,
+    price,
+    stock,
+    available,
+    favorite,
+    categories,
+    image,
+  } = req.body;
+  console.log(req.body);
   try {
     if (typeof name === "string") name = name.toLocaleLowerCase();
-    if (!req.files) {
-      res.status(400).send('No image files were uploaded!');
+
+    const product = new Product({
+      name: name,
+      description: description,
+      price: price,
+      stock: stock,
+      image: image,
+      available: available,
+      favorite: favorite,
+      categories: categories,
+    });
+
+    if (categories) {
+      const foundCategory = await Category.find({
+        name: { $in: categories },
+      });
+      product.categories = foundCategory.map((el) => el._id);
+
     }
     else {
       image = await uploadImage(req.files.image.tempFilePath);
