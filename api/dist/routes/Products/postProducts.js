@@ -24,6 +24,7 @@ router.post("/create", auth_1.verifyToken, auth_1.isAdmin, (req, res) => __await
         if (typeof name === "string")
             name = name.toLocaleLowerCase();
         const image = yield (0, cloudinary_1.uploadImage)(req.files.image.tempFilePath);
+        console.log(image);
         const product = new products_1.default({
             name: name,
             description: description,
