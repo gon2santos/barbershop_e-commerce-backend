@@ -1,6 +1,8 @@
 {
   "dependencies": {
-    "jsonwebtoken": "^8.5.1"
+    "ejs": "^3.1.8",
+    "jsonwebtoken": "^8.5.1",
+    "multer": "^1.4.5-lts.1"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
