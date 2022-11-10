@@ -21,6 +21,7 @@ app.use((0, express_fileupload_1.default)({
     limits: { fileSize: 50 * 1024 * 1024 },
     useTempFiles: true,
     tempFileDir: "./uploads",
+    createParentPath: true,
 }));
 app.use((0, morgan_1.default)("dev"));
 app.use((_req, res, next) => {
