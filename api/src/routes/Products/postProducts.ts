@@ -10,9 +10,11 @@ router.post("/create", verifyToken, isAdmin, async (req: any, res: any) => {
   let { name, description, price, stock, available, favorite, categories } =
     req.body;
 
+  let image: Object;
+
   try {
     if (typeof name === "string") name = name.toLocaleLowerCase();
-    const image : Object = await uploadImage(req.files.image.tempFilePath);
+    image = await uploadImage(req.files.image.tempFilePath);
     console.log(image);
     const product = new Product({
       name: name,
@@ -34,10 +36,10 @@ router.post("/create", verifyToken, isAdmin, async (req: any, res: any) => {
     product.populate("categories", "name -_id");
 
     const savedProduct = await product.save();
-    res.status(200).json(image);
+    res.status(200).send(savedProduct);
   } catch (err) {
     console.log(err);
-    res.status(500).send(err);
+    res.status(500).json(image);
   }
 });
 
