@@ -13,7 +13,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
+const axios_1 = __importDefault(require("axios"));
 const appointments_1 = __importDefault(require("../../models/appointments"));
+const user_1 = __importDefault(require("../../models/user"));
+const office_1 = __importDefault(require("../../models/office"));
+const barber_1 = __importDefault(require("../../models/barber"));
 const router = (0, express_1.Router)();
 router.post("/create", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let { user, date, block, barber, office, service } = req.body;
@@ -24,6 +28,9 @@ router.post("/create", (req, res) => __awaiter(void 0, void 0, void 0, function*
     let todayDateString_year = todayDateString.split("-")[0];
     let todayDateString_month = todayDateString.split("-")[1];
     let todayDateString_day = todayDateString.split("-")[2];
+    let savedAppointment;
+    const foundOffice = yield office_1.default.findById(office);
+    const foundBarber = yield barber_1.default.findById(barber);
     //check date
     if (todayDateString_year > date.split("-")[0])
         res
@@ -90,7 +97,45 @@ router.post("/create", (req, res) => __awaiter(void 0, void 0, void 0, function*
                 office: office,
             });
             if (existingApmnt === null) {
-                apmt.save().then((savedApmt) => res.status(200).send(savedApmt));
+                apmt.save().then((savedApmt) => {
+                    savedAppointment = savedApmt;
+                    return user_1.default.findById(user);
+                })
+                    .then(foundUser => {
+                    const options = {
+                        method: "post",
+                        url: "https://api.sendinblue.com/v3/smtp/email",
+                        data: {
+                            sender: {
+                                name: "grupo7henry",
+                                email: "grupo7henry@gmail.com",
+                            },
+                            to: [
+                                {
+                                    email: `${foundUser.email}`,
+                                    name: `${foundUser.email}`,
+                                },
+                            ],
+                            subject: "Pedido de Turno",
+                            htmlContent: `<html>
+                  <head></head>
+                    <h1>Henry Barbershop</h1>
+                    <body>
+                      <p>Hola! Tu turno fue agendado con exito, </p>
+                        <p>El turno fue agendado para el dia ${date}, a las ${block_str}.</p>  
+                        <p>Te estaras atendiendo con ${foundBarber.name}, en la sucursal localizada en ${foundOffice.location}.</p>  
+                    </body>
+                </html>`,
+                        },
+                        headers: {
+                            "Content-Type": "application/json",
+                            accept: "application/json",
+                            "api-key": `${process.env.SENDINBLUE_API_KEY}`,
+                        },
+                    };
+                    return (0, axios_1.default)(options);
+                })
+                    .then((axiosResponse) => res.status(200).send(savedAppointment));
             }
             else
                 res.status(500).json({ info: "appointment already taken!" });
