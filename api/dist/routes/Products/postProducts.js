@@ -20,10 +20,11 @@ const products_1 = __importDefault(require("../../models/products"));
 const router = (0, express_1.Router)();
 router.post("/create", auth_1.verifyToken, auth_1.isAdmin, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let { name, description, price, stock, available, favorite, categories } = req.body;
+    let image;
     try {
         if (typeof name === "string")
             name = name.toLocaleLowerCase();
-        const image = yield (0, cloudinary_1.uploadImage)(req.files.image.tempFilePath);
+        image = yield (0, cloudinary_1.uploadImage)(req.files.image.tempFilePath);
         console.log(image);
         const product = new products_1.default({
             name: name,
@@ -47,7 +48,7 @@ router.post("/create", auth_1.verifyToken, auth_1.isAdmin, (req, res) => __await
     }
     catch (err) {
         console.log(err);
-        res.status(500).send(err);
+        res.status(500).json(image);
     }
 }));
 exports.default = router;
