@@ -34,7 +34,7 @@ router.post("/create", verifyToken, isAdmin, async (req: any, res: any) => {
     product.populate("categories", "name -_id");
 
     const savedProduct = await product.save();
-    res.status(200).send(image);
+    res.status(200).json(image);
   } catch (err) {
     console.log(err);
     res.status(500).send(err);

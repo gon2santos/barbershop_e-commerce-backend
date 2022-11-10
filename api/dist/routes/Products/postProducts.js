@@ -43,7 +43,7 @@ router.post("/create", auth_1.verifyToken, auth_1.isAdmin, (req, res) => __await
         }
         product.populate("categories", "name -_id");
         const savedProduct = yield product.save();
-        res.status(200).send(image);
+        res.status(200).json(image);
     }
     catch (err) {
         console.log(err);
