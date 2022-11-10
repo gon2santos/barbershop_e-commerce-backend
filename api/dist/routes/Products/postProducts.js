@@ -18,6 +18,7 @@ const categories_1 = __importDefault(require("../../models/categories"));
 const products_1 = __importDefault(require("../../models/products"));
 const router = (0, express_1.Router)();
 router.post("/create", auth_1.verifyToken, auth_1.isAdmin, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+
     let { name, description, price, stock, available, favorite, categories, image, } = req.body;
     console.log(req.body);
     try {
@@ -36,12 +37,18 @@ router.post("/create", auth_1.verifyToken, auth_1.isAdmin, (req, res) => __await
         if (categories) {
             const foundCategory = yield categories_1.default.find({
                 name: { $in: categories },
+
             });
-            product.categories = foundCategory.map((el) => el._id);
+            if (categories) {
+                const foundCategory = yield categories_1.default.find({
+                    name: { $in: categories },
+                });
+                product.categories = foundCategory.map((el) => el._id);
+            }
+            product.populate("categories", "name -_id");
+            const savedProduct = yield product.save();
+            res.status(200).send(savedProduct);
         }
-        product.populate("categories", "name -_id");
-        const savedProduct = yield product.save();
-        res.status(200).send(savedProduct);
     }
     catch (err) {
         console.log(err);
